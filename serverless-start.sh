@@ -11,10 +11,14 @@ if [[ ! -s "$ready_manifest" ]]; then
 fi
 
 mkdir -p "$node_root"
-curl --fail --silent --show-error --location \
-  --retry 4 --retry-all-errors \
-  https://raw.githubusercontent.com/Erockbot/viralviews-h3-worker/e7edb5cadff670eda2aea308a39695f25205fe65/custom_nodes/ComfyUI-MiniMax-H3/nodes.py \
-  --output "$node_root/nodes.py"
+python3 - "$node_root/nodes.py" <<'PY'
+from pathlib import Path
+import sys
+from urllib.request import urlopen
+
+url = "https://raw.githubusercontent.com/Erockbot/viralviews-h3-worker/e7edb5cadff670eda2aea308a39695f25205fe65/custom_nodes/ComfyUI-MiniMax-H3/nodes.py"
+Path(sys.argv[1]).write_bytes(urlopen(url, timeout=60).read())
+PY
 
 link_verified_model() {
   local filename="$1"

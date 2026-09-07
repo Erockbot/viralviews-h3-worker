@@ -10,6 +10,7 @@ Package the benchmark-proven MiniMax H3 FL2VA four-step ComfyUI extension for a 
 # Local Contracts
 
 - Use `runpod/worker-comfyui:5.10.0-base` and the exact benchmark H3 nodes.
+- Bootstrap remote files with the image's Python runtime because the base image does not include `curl`.
 - Store large model files on an attached Runpod network volume under `/runpod-volume/models`.
 - Production requests use one approved start image, 768 by 1344 output, four steps, native audio, and no separate identity or voice references.
 - Keep minimum workers at zero and maximum workers at one until measured category runs justify a change.

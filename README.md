@@ -4,6 +4,8 @@ This public repository contains the exact custom ComfyUI node and startup script
 
 This image adds the exact MiniMax H3 ComfyUI nodes used by the September 7 benchmark to Runpod's official Serverless ComfyUI worker. Model weights live on a Runpod network volume at `/runpod-volume/models`.
 
+The bootstrap uses the Python runtime already included in the worker image to download the pinned node. The base image does not include `curl`.
+
 Required model files:
 
 - `models/diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors`
