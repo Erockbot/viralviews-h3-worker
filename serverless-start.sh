@@ -7,7 +7,7 @@ node_root=/comfyui/custom_nodes/ComfyUI-MiniMax-H3
 mkdir -p "$node_root"
 curl --fail --silent --show-error --location \
   --retry 4 --retry-all-errors \
-  https://raw.githubusercontent.com/Erockbot/viralviews-h3-worker/main/custom_nodes/ComfyUI-MiniMax-H3/nodes.py \
+  https://raw.githubusercontent.com/Erockbot/viralviews-h3-worker/e7edb5cadff670eda2aea308a39695f25205fe65/custom_nodes/ComfyUI-MiniMax-H3/nodes.py \
   --output "$node_root/nodes.py"
 
 link_cached_model() {
