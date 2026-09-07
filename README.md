@@ -1,6 +1,6 @@
 # ViralViews MiniMax H3 Runpod bootstrap
 
-This public repository contains the exact custom ComfyUI node and startup script used by the ViralViews H3 Runpod endpoint. The endpoint runs `runpod/worker-comfyui:5.10.0-base` and attaches the pinned `Comfy-Org/MiniMax-H3` Hugging Face model cache at revision `a98869194787969724c7425d95d0ed73ce9202af`.
+This public repository contains the exact custom ComfyUI node and startup script used by the ViralViews H3 Runpod endpoint. The endpoint runs `runpod/worker-comfyui:5.10.0-base` and attaches the `viralviews-h3-models` network volume containing the pinned `Comfy-Org/MiniMax-H3` revision `a98869194787969724c7425d95d0ed73ce9202af`.
 
 This image adds the exact MiniMax H3 ComfyUI nodes used by the September 7 benchmark to Runpod's official Serverless ComfyUI worker. Model weights live on a Runpod network volume at `/runpod-volume/models`.
 

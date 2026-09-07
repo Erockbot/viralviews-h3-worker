@@ -22,7 +22,7 @@ Package the benchmark-proven MiniMax H3 FL2VA four-step ComfyUI extension for a 
 
 # Verification
 
-- Build the image for `linux/amd64`.
+- Verify the official `linux/amd64` worker image, attached network volume, ready manifest, exact byte counts, and stored SHA-256 manifest.
 - Confirm the endpoint returns a playable H.264 MP4 with AAC audio.
 - Confirm no pods remain and endpoint minimum workers is zero after testing.
 
