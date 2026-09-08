@@ -44,4 +44,23 @@ link_verified_model minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetenso
 link_verified_model minimax_h3_audio_vae_fp32.safetensors vae 605254808
 link_verified_model minimax_h3_video_vae_fp16.safetensors vae 5207808496
 
+if [[ "${VIRALVIEWS_H3_MEMORY_MODE:-default}" == "low_ram" ]]; then
+  python3 - <<'PY'
+from pathlib import Path
+
+cli = Path('/comfyui/comfy/cli_args.py').read_text()
+flags = '--cache-none --disable-pinned-memory'
+for flag in flags.split():
+    if flag not in cli:
+        raise SystemExit(f'viralviews-h3: unsupported low-RAM flag: {flag}')
+entry = Path('/start.sh')
+source = entry.read_text()
+needle = 'python -u /comfyui/main.py --disable-auto-launch'
+if source.count(needle) != 2:
+    raise SystemExit('viralviews-h3: official start.sh shape changed; refusing an unverified memory patch')
+entry.write_text(source.replace(needle, f'python -u /comfyui/main.py {flags} --disable-auto-launch'))
+print(f'viralviews-h3: isolated low-RAM experiment enabled: {flags}', flush=True)
+PY
+fi
+
 exec /start.sh

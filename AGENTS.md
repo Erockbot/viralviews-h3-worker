@@ -18,6 +18,8 @@ Package the benchmark-proven MiniMax H3 FL2VA four-step ComfyUI extension for a 
 
 # Work Guidance
 
+- The opt-in `VIRALVIEWS_H3_MEMORY_MODE=low_ram` experiment disables node caching and pinned memory after validating the pinned worker launch script and supported CLI flags. Keep it isolated to a test template until a complete clip and execution cost are verified.
+
 - Tag images immutably. Never deploy `latest`.
 - Preserve failed jobs and their measured cost.
 
