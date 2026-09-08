@@ -44,6 +44,38 @@ link_verified_model minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetenso
 link_verified_model minimax_h3_audio_vae_fp32.safetensors vae 605254808
 link_verified_model minimax_h3_video_vae_fp16.safetensors vae 5207808496
 
+if [[ "${VIRALVIEWS_H3_KERNEL_MODE:-default}" == "cu128_sm89" ]]; then
+  python3 - <<'PY'
+from pathlib import Path
+import hashlib
+import subprocess
+import sys
+from urllib.request import urlopen
+import torch
+
+if torch.version.cuda != '12.8' or torch.cuda.get_device_capability() != (8, 9):
+    raise SystemExit('viralviews-h3: benchmark kernel requires CUDA 12.8 and SM89')
+name = 'comfy_kitchen-0.2.33-cp312-abi3-linux_x86_64.whl'
+url = f'https://github.com/Erockbot/viralviews-h3-worker/releases/download/h3-cu128-sm89-20260907/{name}'
+data = urlopen(url, timeout=60).read()
+if hashlib.sha256(data).hexdigest() != 'fcfc38d2ef7a172206c7ea9c49a523dff1b6b8889e3cb26897bfa768c3821222':
+    raise SystemExit('viralviews-h3: benchmark kernel SHA mismatch')
+wheel = Path('/tmp') / name
+wheel.write_bytes(data)
+subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps', '--force-reinstall', str(wheel)], check=True)
+import comfy_kitchen as ck
+if not ck.list_backends().get('cuda', {}).get('available'):
+    raise SystemExit('viralviews-h3: benchmark CUDA backend is unavailable')
+path = Path('/comfyui/comfy/quant_ops.py')
+source = path.read_text()
+needle = 'if cuda_version < (13,):'
+if source.count(needle) != 1:
+    raise SystemExit('viralviews-h3: quant_ops CUDA guard changed')
+path.write_text(source.replace(needle, 'if cuda_version < (12, 8): # verified benchmark SM89 wheel'))
+print('viralviews-h3: benchmark CUDA 12.8 SM89 kernel installed and enabled', flush=True)
+PY
+fi
+
 if [[ "${VIRALVIEWS_H3_MEMORY_MODE:-default}" == "low_ram" ]]; then
   python3 - <<'PY'
 from pathlib import Path
